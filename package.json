@@ -1,0 +1,11 @@
+{
+  "name": "ci-cd-lab",
+  "version": "1.0.0",
+  "description": "Calculator CI/CD experiment",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
