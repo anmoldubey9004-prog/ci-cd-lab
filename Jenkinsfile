@@ -13,7 +13,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    def checkoutInfo = checkout scm
+                    env.CHECKED_OUT_BRANCH = checkoutInfo.GIT_BRANCH ?: ''
+                    echo "Checked out branch: ${env.CHECKED_OUT_BRANCH}"
+                }
             }
         }
 
@@ -32,8 +36,8 @@ pipeline {
         stage('Deploy') {
             when {
                 expression {
-                    env.GIT_BRANCH == 'origin/main' ||
-                    env.GIT_BRANCH == 'main'
+                    env.CHECKED_OUT_BRANCH == 'origin/main' ||
+                    env.CHECKED_OUT_BRANCH == 'main'
                 }
             }
             steps {
@@ -44,8 +48,7 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully.'
-            echo 'Calculator URL: http://localhost:8081'
+            echo 'Pipeline finished. Check Deploy stage and localhost:8081.'
         }
 
         failure {
